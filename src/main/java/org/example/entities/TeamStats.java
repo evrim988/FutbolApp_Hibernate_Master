@@ -42,6 +42,9 @@ public class TeamStats extends BaseEntity {
 	
 	@Override
 	public void prePersist() {
+		this.state = 1;
+		this.createdAt = LocalDate.now();
+		this.updatedAt = LocalDate.now();
 		this.lastUpdateDate = LocalDate.now();
 	}
 	

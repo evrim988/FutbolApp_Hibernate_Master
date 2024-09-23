@@ -1,32 +1,59 @@
 package org.example.utility;
 
-import org.example.entities.League;
-import org.example.entities.Manager;
-import org.example.entities.Team;
+import org.example.entities.*;
+import org.example.entities.attributes.GKAttributes;
+import org.example.entities.attributes.MentalAttributes;
+import org.example.entities.attributes.PhysicalAttributes;
 import org.example.entities.attributes.TechnicalAttributes;
+import org.example.enums.EMatchStatus;
+import org.example.enums.EPosition;
 import org.example.enums.ERegion;
-import org.example.repository.LeagueRepository;
-import org.example.repository.ManagerRepository;
-import org.example.repository.TeamRepository;
+import org.example.repository.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class DemoData {
 
     LeagueRepository leagueRepository;
     TeamRepository teamRepository;
     ManagerRepository managerRepository;
+    TechnicalRepository technicalRepository;
+    MentalAttributesRepository mentalAttributesRepository;
+    PhysicalAttributesRepository physicalAttributesRepository;
+    GkaAttributesRepository gkaAttributesRepository;
+    PlayerRepository playerRepository;
+    TeamStatRepository teamStatRepository;
+    MatchRepository matchRepository;
     private League league;
+    private TechnicalAttributes ta;
+    private MentalAttributes ma;
+    private PhysicalAttributes pm;
+    private GKAttributes gk;
 
     public DemoData() {
         this.leagueRepository = new LeagueRepository();
         this.teamRepository = new TeamRepository();
         this.managerRepository = new ManagerRepository();
+        this.playerRepository = new PlayerRepository();
+        this.technicalRepository = new TechnicalRepository();
+        this.mentalAttributesRepository = new MentalAttributesRepository();
+        this.physicalAttributesRepository = new PhysicalAttributesRepository();
+        this.gkaAttributesRepository = new GkaAttributesRepository();
+        this.teamStatRepository = new TeamStatRepository();
+        this.matchRepository = new MatchRepository();
     }
 
     public void createDemoData() {
-        createLeague();
-        createTeamsAndManagers();
+        //createLeague();
+        //createTeamsAndManagers();
+        // createAttributes();
+        //createPlayers();
+        //createTeamStats();
+        generateFixtures();
     }
 
     private void createLeague() {
@@ -475,7 +502,7 @@ public class DemoData {
     }
 
     public void createAttributes() {
-        TechnicalAttributes ta = TechnicalAttributes.builder()
+        ta = TechnicalAttributes.builder()
                 .finishing(10)
                 .pass(10)
                 .dribbling(10)
@@ -486,7 +513,195 @@ public class DemoData {
                 .positioning(10)
                 .firstTouch(10)
                 .build();
+        technicalRepository.save(ta);
+
+        ma = MentalAttributes.builder()
+                .composure(10)
+                .vision(10)
+                .decisionMaking(10)
+                .build();
+        mentalAttributesRepository.save(ma);
+
+        pm = PhysicalAttributes.builder()
+                .stamina(10)
+                .speed(10)
+                .strength(10)
+                .jumping(10)
+                .height(10)
+                .build();
+        physicalAttributesRepository.save(pm);
+
+        gk = GKAttributes.builder()
+                .diving(10)
+                .oneOnOne(10)
+                .positioning(10)
+                .reflexes(10)
+                .build();
+        gkaAttributesRepository.save(gk);
     }
 
+    public void createPlayers() {
 
+        String[] names =
+                {"Ahmet", "Baris", "Can", "Deniz", "Efe", "Fikret", "Gokhan", "Huseyin", "Ibrahim", "Kamil", "Levent",
+                        "Mehmet", "Nadir", "Onur", "Rifat", "Selim", "Tuna", "Umut", "Veli", "Zafer"};
+        String[] surnames = {"Yilmaz", "Celik", "Ozturk", "Ozcan", "Kaya", "Kilic"};
+        Integer[] ages = {18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+        String nationality = "Turkiye";
+        Double wage = 1d;
+        Double salary = 1d;
+        EPosition[] positions = {EPosition.CB, EPosition.LB, EPosition.RB, EPosition.CM, EPosition.LW, EPosition.RW, EPosition.ST};
+
+        // EPosition.GK,
+        Random psur = new Random();
+        psur.nextInt(0, surnames.length);
+
+        Random pages = new Random();
+        pages.nextInt(0, ages.length);
+
+        Random ppos = new Random();
+        ppos.nextInt(0, ages.length);
+
+        List<Team> teamList = teamRepository.findAll();
+
+
+        int name = 0;
+      /*  for (Team team : teamList) {
+            for (int i = 0; i < positions.length; i++) {
+                Player player = Player.builder()
+                        .personName(names[name])
+                        .personSurname(surnames[psur.nextInt(surnames.length)])
+                        .personAge(ages[pages.nextInt(ages.length)]).personNationality(nationality)
+                        .playerValue(1d).playerWage(1d)
+                        .playerTechnicalAttributes(ta)
+                        .playerMentalAttributes(ma)
+                        .playerPhysicalAttributes(pm)
+                        .team(team)
+                        .playersPosition(positions[i])
+                        .build();
+
+                playerRepository.save(player);
+            }
+            name++;
+
+        }
+*/
+        for (Team team : teamList) {
+            Player player = Player.builder()
+                    .personName(names[name])
+                    .personSurname(surnames[psur.nextInt(surnames.length)])
+                    .personAge(ages[pages.nextInt(ages.length)]).personNationality(nationality)
+                    .playerValue(1d).playerWage(1d)
+                    .gkAttributes(gk)
+                    .team(team)
+                    .playersPosition(EPosition.GK)
+                    .build();
+
+            playerRepository.save(player);
+            name++;
+        }
+
+    }
+
+    public void createTeamStats() {
+
+        for (Team team : teamRepository.findAll()) {
+            for (League league : leagueRepository.findAll()) {
+                TeamStats ts = TeamStats.builder()
+                        .teamLeague(league)
+                        .team(team)
+                        .totalPoint(0)
+                        .goalScored(0)
+                        .goalConceded(0)
+                        .average(0)
+                        .gamesPlayed(0)
+                        .gamesWon(0)
+                        .gamesLost(0)
+                        .gamesDrawn(0)
+                        .build();
+
+                teamStatRepository.save(ts);
+            }
+
+        }
+
+
+    }
+
+    public void generateFixtures() {
+
+        League leaguex = leagueRepository.findById(1).get();
+
+
+
+
+        LocalDate matchDate = leaguex.getSeasonStartDate();
+        Team homeTeam;
+        Team awayTeam;
+        Match match;
+
+
+        // Takım ID'lerini listeye ekliyorsunuz
+        List<Team> teamList = teamRepository.findAll();
+
+
+
+        int rounds = ((teamList.size() * 2) - 2);
+
+        for (int round = 1; round <= rounds; round++) {
+            LocalDate[] matchDates = getWeekMatchDates(matchDate);
+            boolean reverseHomeAway = (round % 2 == 0);
+            for (int i = 0; i < teamList.size() / 2; i++) {
+
+                // Takımları bulurken Integer tipinde ID kullanıyoruz
+                homeTeam = teamList.get(i);
+                awayTeam = teamList.get(teamList.size() - 1 - i);
+
+                // Ev sahibi ve deplasman takımını değiştirme
+                if (reverseHomeAway) {
+                    Team temp = homeTeam;
+                    homeTeam = awayTeam;
+                    awayTeam = temp;
+                }
+
+                // Fikstür oluşturma
+                if (homeTeam == teamList.getFirst()) {
+                    Random random = new Random();
+                    match = Match.builder().homeTeam(homeTeam)
+                            .awayTeam(awayTeam)
+                            .matchDate(matchDates[random.nextInt(0, 4)])
+                            .status(EMatchStatus.SCHEDULED)
+                            .league(leaguex)
+                            .homeTeamScore(0)
+                            .awayTeamScore(0)
+                            .build();
+                    matchRepository.save(match);
+
+                } else {
+                    match = Match.builder().homeTeam(homeTeam)
+                            .awayTeam(awayTeam)
+                            .matchDate(matchDates[i % 4])
+                            .status(EMatchStatus.SCHEDULED)
+                            .league(leaguex)
+                            .homeTeamScore(0)
+                            .awayTeamScore(0)
+                            .build();
+                    matchRepository.save(match);
+                }
+
+
+            }
+            // Takım listesini rotasyona sokma
+            Collections.rotate(teamList.subList(1, teamList.size()), 1);
+            matchDate = matchDate.plusWeeks(1);
+        }
+    }
+
+    private static LocalDate[] getWeekMatchDates(LocalDate startDate) {
+        return new LocalDate[]{startDate, // Friday
+                startDate.plusDays(1), // Saturday
+                startDate.plusDays(2), // Sunday
+                startDate.plusDays(3) // Monday
+        };
+    }
 }
