@@ -26,6 +26,12 @@ public class ServiceManager<T, ID> implements ICRUDService<T, ID> {
     }
 
     @Override
+    public T update(T entity) {
+        return repository.update(entity);
+    }
+
+
+    @Override
     public Boolean deleteById(ID id) {
         return repository.deleteById(id);
     }
@@ -43,5 +49,10 @@ public class ServiceManager<T, ID> implements ICRUDService<T, ID> {
     @Override
     public List<T> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<T> findByFieldNameAndValue(String fieldName, Object value) {
+        return repository.findByFieldNameAndValue(fieldName, value);
     }
 }

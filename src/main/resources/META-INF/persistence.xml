@@ -7,6 +7,7 @@
     <persistence-unit name="pu_hibernate">
 
         <class>org.example.entities.BaseEntity</class>
+        <class>org.example.entities.Ball</class>
         <class>org.example.entities.Person</class>
         <class>org.example.entities.League</class>
         <class>org.example.entities.Team</class>
@@ -14,6 +15,7 @@
         <class>org.example.entities.Manager</class>
         <class>org.example.entities.Player</class>
         <class>org.example.entities.TeamStats</class>
+        <class>org.example.entities.GameDate</class>
         <class>org.example.entities.attributes.GKAttributes</class>
         <class>org.example.entities.attributes.MentalAttributes</class>
         <class>org.example.entities.attributes.PhysicalAttributes</class>
@@ -33,7 +35,7 @@
                       value="root" />
 
             <property name="hibernate.show_sql"
-                      value="false" />
+                      value="true" />
 
             <property name="hibernate.hbm2ddl.auto"
                       value="update" />

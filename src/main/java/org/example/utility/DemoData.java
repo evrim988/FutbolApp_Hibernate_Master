@@ -11,7 +11,6 @@ import org.example.enums.ERegion;
 import org.example.repository.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +27,7 @@ public class DemoData {
     PlayerRepository playerRepository;
     TeamStatRepository teamStatRepository;
     MatchRepository matchRepository;
+    GameDateRepository gameDateRepository;
     private League league;
     private TechnicalAttributes ta;
     private MentalAttributes ma;
@@ -45,6 +45,7 @@ public class DemoData {
         this.gkaAttributesRepository = new GkaAttributesRepository();
         this.teamStatRepository = new TeamStatRepository();
         this.matchRepository = new MatchRepository();
+        this.gameDateRepository = new GameDateRepository();
     }
 
     public void createDemoData() {
@@ -53,7 +54,8 @@ public class DemoData {
         // createAttributes();
         //createPlayers();
         //createTeamStats();
-        generateFixtures();
+        //generateFixtures();
+        //createGameDate();
     }
 
     private void createLeague() {
@@ -703,5 +705,13 @@ public class DemoData {
                 startDate.plusDays(2), // Sunday
                 startDate.plusDays(3) // Monday
         };
+    }
+
+    public void createGameDate(){
+        GameDate date = GameDate.builder()
+                .gameDate(LocalDate.of(2024,8,23))
+                .build();
+        gameDateRepository.save(date);
+
     }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,28 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
                 tx.rollback();
             }
             System.out.println("Save metodunda hata..."+e.getMessage());
+        }
+        finally {
+            em.close();
+        }
+        return entity;
+    }
+
+    @Override
+    public T update(T entity) {
+        EntityManager em = getEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            entity = em.merge(entity);
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error while updating..."+e.getMessage());
         }
         finally {
             em.close();
@@ -130,4 +153,21 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
             em.close();
         }
     }
+
+
+    @Override
+    public List<T> findByFieldNameAndValue(String fieldName, Object value) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<T> cq = cb.createQuery(entityClass);
+            Root<T> root = cq.from(entityClass);
+            cq.select(root).where(cb.like(root.get(fieldName), "%" + value + "%"));
+            return em.createQuery(cq).getResultList();
+        }
+        finally {
+            em.close();
+        }
+    }
+
 }

@@ -9,6 +9,8 @@ public interface ICRUDService<T, ID> {
 
     Iterable<T> saveAll(Iterable<T> entities);
 
+    T update(T entity);
+
     Boolean deleteById(ID id);
 
     Optional<T> findById(ID id);
@@ -16,5 +18,7 @@ public interface ICRUDService<T, ID> {
     Boolean existById(ID id);
 
     List<T> findAll();
+
+    List<T> findByFieldNameAndValue(String fieldName,Object value);
 
 }
