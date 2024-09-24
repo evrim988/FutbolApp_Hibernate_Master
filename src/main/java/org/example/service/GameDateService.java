@@ -8,13 +8,22 @@ public class GameDateService extends ServiceManager<GameDate, Integer> {
 
     private final GameDateRepository gameDateRepository;
 
-    public GameDateService() {
+    private static GameDateService instance;
+
+    private GameDateService() {
         this(new GameDateRepository());
     }
 
     private GameDateService(GameDateRepository gameDateRepository) {
         super(gameDateRepository);
         this.gameDateRepository = gameDateRepository;
+    }
+
+    public static GameDateService getInstance() {
+        if (instance == null) {
+            instance = new GameDateService();
+        }
+        return instance;
     }
 
 

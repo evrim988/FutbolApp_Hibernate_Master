@@ -22,9 +22,12 @@ public class ManagerService extends ServiceManager<Manager,Integer>  {
 	private ManagerService(ManagerRepository repository) {
 		super(repository);
 		this.managerRepository = repository;
+		this.teamService = TeamService.getInstance();
+		this.leagueService = LeagueService.getInstance();
 	}
 
 	public List<Manager> findAllByLeague(Integer id) {
+		List<Manager> allManagers = new ArrayList<>();
 		try{
 			Optional<League> league = leagueService.findById(id);
 			if (league.isPresent()) {
@@ -32,7 +35,7 @@ public class ManagerService extends ServiceManager<Manager,Integer>  {
 				List<Team> teamList = teamService.findByFieldNameAndValue("league", leagueX);
 				for (Team team : teamList) {
 					List<Manager> managerList = findByFieldNameAndValue("team", team);
-					return managerList;
+					allManagers.addAll(managerList);
 
 				}
 			}
@@ -41,7 +44,7 @@ public class ManagerService extends ServiceManager<Manager,Integer>  {
 			System.out.println("Service: Manager listelemede hata: " + e.getMessage());
 		}
 
-		return new ArrayList<>();
+		return allManagers;
 	}
 
 	public Optional<Manager> findByUserNameAndPassword(String username, String password) {

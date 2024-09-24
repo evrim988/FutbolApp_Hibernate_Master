@@ -13,7 +13,7 @@ public class GameDateController {
     private final GameDateService gameDateService;
 
     public GameDateController() {
-        this.gameDateService = new GameDateService();
+        this.gameDateService = GameDateService.getInstance();
     }
 
     public GameDate saveGameDate(GameDate gameDate) {

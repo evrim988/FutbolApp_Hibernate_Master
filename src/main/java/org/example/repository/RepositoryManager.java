@@ -12,13 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
-
-    private final EntityManagerFactory emf;
+    private static final EntityManagerFactory emf = buildEntityManagerFactory();
     private final Class<T> entityClass;
 
     public RepositoryManager(Class<T> entityClass) {
-        this.emf = Persistence.createEntityManagerFactory("pu_hibernate");
         this.entityClass = entityClass;
+    }
+
+    private static EntityManagerFactory buildEntityManagerFactory() {
+        try {
+            return Persistence.createEntityManagerFactory("pu_hibernate");
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to initialize EntityManagerFactory", e);
+        }
     }
 
     protected EntityManager getEntityManager() {
@@ -34,14 +40,12 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
             tx.begin();
             em.persist(entity);
             tx.commit();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            System.out.println("Save metodunda hata..."+e.getMessage());
-        }
-        finally {
+            System.out.println("Save metodunda hata..." + e.getMessage());
+        } finally {
             em.close();
         }
         return entity;
@@ -56,14 +60,12 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
             tx.begin();
             entity = em.merge(entity);
             tx.commit();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            System.out.println("Error while updating..."+e.getMessage());
-        }
-        finally {
+            System.out.println("Error while updating..." + e.getMessage());
+        } finally {
             em.close();
         }
         return entity;
@@ -80,14 +82,12 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
                 em.persist(entity);
             }
             tx.commit();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            System.out.println("SaveAll metodunda hata..."+e.getMessage());
-        }
-        finally {
+            System.out.println("SaveAll metodunda hata..." + e.getMessage());
+        } finally {
             em.close();
         }
         return entities;
@@ -105,20 +105,17 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
                 em.remove(entityToRemove);
                 tx.commit();
                 return true;
-            }
-            else {
+            } else {
                 tx.commit();
                 return false;
             }
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            System.out.println("DeleteById metodunda hata..."+e.getMessage());
+            System.out.println("DeleteById metodunda hata..." + e.getMessage());
             return false;
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -129,8 +126,7 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
         try {
             T entity = em.find(entityClass, id);
             return Optional.ofNullable(entity);
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -148,8 +144,7 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
             CriteriaQuery<T> cq = cb.createQuery(entityClass);
             cq.select(cq.from(entityClass));
             return em.createQuery(cq).getResultList();
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -162,7 +157,30 @@ public class RepositoryManager<T, ID> implements ICRUD<T, ID> {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<T> cq = cb.createQuery(entityClass);
             Root<T> root = cq.from(entityClass);
-            cq.select(root).where(cb.like(root.get(fieldName), "%" + value + "%"));
+            Class<?> fieldType = root.get(fieldName).getJavaType();
+            if (fieldType.equals(String.class)) {
+                cq.select(root).where(
+                        cb.like(cb.lower(root.get(fieldName)), "%" + value.toString().toLowerCase() + "%")
+                );
+            }
+            else {
+                cq.select(root).where(cb.equal(root.get(fieldName), value));
+            }
+            return em.createQuery(cq).getResultList();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<T> findByFieldNameAndValueEqual(String fieldName, Object value) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<T> cq = cb.createQuery(entityClass);
+            Root<T> root = cq.from(entityClass);
+            cq.select(root).where(cb.equal(root.get(fieldName),  value));
             return em.createQuery(cq).getResultList();
         }
         finally {

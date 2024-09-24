@@ -20,4 +20,6 @@ public interface ICRUD<T, ID> {
     List<T> findAll();
 
     List<T> findByFieldNameAndValue(String fieldName,Object value);
+
+    List<T> findByFieldNameAndValueEqual(String fieldName, Object value);
 }

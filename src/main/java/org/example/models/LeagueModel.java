@@ -45,7 +45,7 @@ public class LeagueModel {
 	}
 	
 	public void initializeStandingTable() {
-		List<TeamStats> teamStatsList = DatabaseModels.teamStatController.findAllLeagueId(this.id);
+		List<TeamStats> teamStatsList = DatabaseModels.teamStatController.findAllLeagueId(id);
 		teamStatsList.sort(Comparator.comparing(TeamStats::getTotalPoint).thenComparing(TeamStats::getAverage)
 		                             .thenComparing(TeamStats::getGoalScored).reversed());
 		

@@ -31,7 +31,7 @@ public class FixtureModule {
 			System.out.println("\n---------Fixture Menu--------------");
 			System.out.println("1-Fixture By League ID");
 			System.out.println("2-Fixture By Team Name");
-			System.out.println("0-FootballApp.Main Menu");
+			System.out.println("0-Main Menu");
 			System.out.print("Selection: ");
 			try {
 				userInput = sc.nextInt();

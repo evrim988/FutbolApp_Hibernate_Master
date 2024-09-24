@@ -14,7 +14,7 @@ public class LeagueController {
     private final LeagueService leagueService;
 
     public LeagueController() {
-        this.leagueService = new LeagueService();
+        this.leagueService = LeagueService.getInstance();
     }
 
     public Optional<League> findById(int id) {
@@ -45,4 +45,6 @@ public class LeagueController {
         }
         return new ArrayList<>();
     }
+
+
 }

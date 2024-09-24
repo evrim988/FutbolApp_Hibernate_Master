@@ -12,15 +12,24 @@ import java.util.Optional;
 public class TeamStatService extends ServiceManager<TeamStats, Integer>  {
 	private final TeamStatRepository teamStatRepository;
 	private final LeagueService leagueService;
-	
-	public TeamStatService() {
+
+	private static TeamStatService instance;
+
+	private TeamStatService() {
 		this(new TeamStatRepository());
 	}
 	
 	private TeamStatService(TeamStatRepository repository) {
 		super(repository);
 		this.teamStatRepository = repository;
-		this.leagueService = new LeagueService();
+		this.leagueService = LeagueService.getInstance();
+	}
+
+	public static TeamStatService getInstance() {
+		if (instance == null) {
+			instance = new TeamStatService();
+		}
+		return instance;
 	}
 
 	public List<TeamStats> findAllLeagueId(Integer leagueId) {

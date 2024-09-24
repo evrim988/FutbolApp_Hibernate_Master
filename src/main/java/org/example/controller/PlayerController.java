@@ -14,7 +14,7 @@ public class PlayerController {
     private final PlayerService playerService;
 
     public PlayerController() {
-        this.playerService = new PlayerService();
+        this.playerService = PlayerService.getInstance();
     }
 
     public Optional<Player> findById(int id) {
@@ -40,9 +40,9 @@ public class PlayerController {
         return playerService.findByFieldNameAndValue(fieldName, value);
     }
 
-    public List<Player> findAllByTeamName(String teamName) {
+   /* public List<Player> findAllByTeamName(String teamName) {
         return playerService.findAllByTeamName(teamName);
-    }
+    }*/
 
     public List<Player> findAllByTeam(Integer id) {
         return playerService.findAllByTeam(id);

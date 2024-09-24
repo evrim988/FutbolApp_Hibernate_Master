@@ -33,7 +33,7 @@ public class TeamModule {
 			System.out.println("1-List of Teams");
 			System.out.println("3-Find Team by Name");
 			System.out.println("4-Played Matches of a Team");
-			System.out.println("0-FootballApp.Main Menu");
+			System.out.println("0-Main Menu");
 			System.out.print("Selection: ");
 			try {
 				userInput = sc.nextInt();
@@ -57,16 +57,13 @@ public class TeamModule {
 			case 1 -> displayAllTeams(LogInModule.loggedManager);
 			case 3 -> displayTeamByName();
 			case 4 -> displayPlayedMatchesTeam();
-			case 0 -> System.out.println("\nReturning to FootballApp.Main Menu...\n");
+			case 0 -> System.out.println("\nReturning to Main Menu...\n");
 			default-> System.out.println("Please enter a valid value!");
 		}
 	}
 	
 	private static void displayPlayedMatchesTeam() {
-		for(Team team : DatabaseModels.teamController.findAll()) {
-			int count = 1;
-			System.out.println(count + " - " + team.getTeamName());
-		}
+		displayTeams();
 		System.out.println("Enter a Team ID to view their played matches: ");
 		Integer teamID = sc.nextInt();
 		Optional<Team> byID = DatabaseModels.teamController.findById(teamID);
@@ -96,7 +93,10 @@ public class TeamModule {
 			return;
 		}
 		else{
-			byTeamName.forEach(team -> System.out.println("TeamName: " + team.getTeamName()));
+			for(Team team : byTeamName) {
+				System.out.println(team.getId() + " - " + team.getTeamName());
+			}
+
 		}
 		displayTeamDetails();
 	}
@@ -111,17 +111,15 @@ public class TeamModule {
 			System.out.println("Manager's Current Team:  ");
 			System.out.println(byID.get());
 		}
-		System.out.println("\nOther Teams:  ");
+		/*System.out.println("\nOther Teams:  ");
 		teams.stream().filter(team -> team.getId()!= manager.getTeam().getId() && !(team.getTeamName().equals("BYE"))).forEach(team -> System.out.println("Team Name: " + team.getTeamName()));
+		*/
+		displayTeams();
 		displayTeamDetails();
 	}
 	
 	public static void displayTeamDetails() {
 		try {
-			for(Team team : DatabaseModels.teamController.findAll()) {
-				int count = 1;
-				System.out.println(count + " - " + team.getTeamName());
-			}
 			System.out.print("\nWhich team do you want to select? Please enter the Team ID (0=Back to Team Menu): ");
 			Integer teamID = sc.nextInt();
 			if(teamID==0){
@@ -145,12 +143,24 @@ public class TeamModule {
 				for (Player player:players){
 					System.out.println(player);
 				}
-				
+
 			}
 		}catch (InputMismatchException e){
 			System.out.println("\nPlease enter a numeric value!");
 			sc.next();
 		}
-		
+
+	}
+
+	public static void displayTeams(){
+
+		for(Team team : DatabaseModels.teamController.findAll()) {
+			if (team.getTeamName().equalsIgnoreCase("BYE")){
+				continue;
+			}
+
+			System.out.println(team.getId() + " - " + team.getTeamName());
+
+		}
 	}
 }

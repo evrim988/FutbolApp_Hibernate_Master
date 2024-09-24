@@ -15,15 +15,24 @@ public class MatchService extends ServiceManager<Match, Integer>  {
 	private final TeamService teamService;
 	private final LeagueService leagueService;
 
-	public MatchService() {
+	private static MatchService instance;
+
+	private MatchService() {
 		this(new MatchRepository());
 	}
 	
 	private MatchService(MatchRepository repository) {
 		super(repository);
 		this.matchRepository = repository;
-		this.teamService = new TeamService();
-		this.leagueService = new LeagueService();
+		this.teamService = TeamService.getInstance();
+		this.leagueService = LeagueService.getInstance();
+	}
+
+	public static MatchService getInstance() {
+		if (instance == null) {
+			instance = new MatchService();
+		}
+		return instance;
 	}
 
 	public List<Match> findAllByTeamId(Integer teamId) {

@@ -10,7 +10,7 @@ public class MatchController {
     private final MatchService matchService;
 
     public MatchController() {
-        this.matchService = new MatchService();
+        this.matchService = MatchService.getInstance();
     }
 
     public List<Match> findAll() {

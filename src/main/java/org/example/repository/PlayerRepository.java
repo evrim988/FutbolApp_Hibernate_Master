@@ -15,18 +15,14 @@ public class PlayerRepository extends RepositoryManager<Player, Integer> {
         super(Player.class);
     }
 
-    public List<Player> findAllByTeamName(String teamName) {
-        Query nativeQuery = getEntityManager().createNativeQuery("select id from tblteam where teamname = '" + teamName + "'");
-        List teamList = nativeQuery.getResultList();
-        Integer teamId = (Integer) teamList.getFirst();
+   /* public List<Player> findAllByTeamName(String teamName) {
 
-        /*Query nativeQuery1 = getEntityManager().createNativeQuery("select p.* from tblplayer p where teamid = '" + teamId + "'");
-        List playerList = nativeQuery1.getResultList();*/
+
 
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Player> criteriaQuery = criteriaBuilder.createQuery(Player.class);
         Root<Player> root = criteriaQuery.from(Player.class);
         criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("team"), teamId));
         return getEntityManager().createQuery(criteriaQuery).getResultList();
-    }
+    }*/
 }

@@ -35,7 +35,7 @@
                       value="root" />
 
             <property name="hibernate.show_sql"
-                      value="true" />
+                      value="false" />
 
             <property name="hibernate.hbm2ddl.auto"
                       value="update" />

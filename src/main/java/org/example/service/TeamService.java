@@ -16,15 +16,24 @@ public class TeamService extends ServiceManager<Team, Integer>  {
 	private final LeagueService leagueService;
 	private final PlayerService playerService;
 
-	public TeamService() {
+	private static TeamService instance;
+
+	private TeamService() {
 		this(new TeamRepository());
 	}
 	
 	private TeamService(TeamRepository repository) {
 		super(repository);
 		this.teamRepository = repository;
-		this.leagueService = new LeagueService();
-		this.playerService = new PlayerService();
+		this.playerService = PlayerService.getInstance();
+		this.leagueService = LeagueService.getInstance();
+	}
+
+	public static TeamService getInstance() {
+		if (instance == null) {
+			instance = new TeamService();
+		}
+		return instance;
 	}
 
 	public List<Team> findAllByLeague(Integer id) {
@@ -47,5 +56,7 @@ public class TeamService extends ServiceManager<Team, Integer>  {
 		return Optional.empty();
 	}
 
-
+	public List<Team> findByFieldNameAndValueEqual(String fieldName, Object value) {
+		return teamRepository.findByFieldNameAndValueEqual(fieldName, value);
+	}
 }

@@ -131,7 +131,7 @@ public class LeagueModule {
 	
 	
 	private static void displayLeagueByName() {
-		System.out.println("Enter a League Name: (0=Back to Team Menu)");
+		System.out.print("Enter a League Name (0=Back to Team Menu): ");
 		String leagueName=sc.nextLine();
 		if(leagueName.equalsIgnoreCase("0")){
 			return;

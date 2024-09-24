@@ -25,6 +25,14 @@ public class MatchModule {
 	static MatchEngine matchEngine = new MatchEngine();
 	static GameDate gameDate;
 
+	static {
+		Optional<GameDate> byId = DatabaseModels.gameDateController.findById(1);
+		if (byId.isPresent()) {
+			gameDate = byId.get();
+		}
+		currentDate = gameDate.getGameDate();
+	}
+
 	public static void saveDatesToFile() {
 		gameDate = new GameDate();
 		gameDate.setGameDate(currentDate);

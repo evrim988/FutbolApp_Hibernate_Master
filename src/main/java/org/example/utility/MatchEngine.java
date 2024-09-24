@@ -428,7 +428,7 @@ public class MatchEngine {
 	}
 	
 	private Player selectGoalkeeper(Team team) {
-		return DatabaseModels.playerController.findAllByTeam(team.getId()).stream()
+		return DatabaseModels.playerController.findByFieldNameAndValue("team", team).stream()
 		                            .filter(player -> player.getPlayersPosition() == EPosition.GK)
 		                            .findFirst().orElse(null);
 	}

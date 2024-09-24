@@ -11,26 +11,36 @@ import java.util.Optional;
 
 public class PlayerService extends ServiceManager<Player, Integer>  {
 	private final PlayerRepository playerRepository;
-	private final TeamService teamService;
+
+
+	private static PlayerService instance;
 	
-	public PlayerService() {
+	private PlayerService() {
 		this(new PlayerRepository());
 	}
 	
 	private PlayerService(PlayerRepository repository) {
 		super(repository);
 		this.playerRepository = repository;
-		this.teamService = new TeamService();
+
 	}
 
-	public List<Player> findAllByTeamName(String teamName) {
+	public static PlayerService getInstance() {
+		if (instance == null) {
+			instance = new PlayerService();
+		}
+		return instance;
+	}
+
+
+	/*public List<Player> findAllByTeamName(String teamName) {
 		return playerRepository.findAllByTeamName(teamName);
 	}
-
+*/
 
 
 	public List<Player> findAllByTeam(Integer id) {
-		Optional<Team> team = teamService.findById(id);
+		Optional<Team> team = TeamService.getInstance().findById(id);
 		if (team.isPresent()) {
 			Team teamX = team.get();
 			List<Player> playerList = findByFieldNameAndValue("team", teamX);
@@ -38,6 +48,7 @@ public class PlayerService extends ServiceManager<Player, Integer>  {
 		}
 		return new ArrayList<>();
 	}
+
 
 
 }

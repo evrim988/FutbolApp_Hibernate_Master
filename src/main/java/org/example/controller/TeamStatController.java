@@ -13,7 +13,7 @@ public class TeamStatController {
     private final TeamStatService teamStatService;
 
     public TeamStatController() {
-        this.teamStatService = new TeamStatService();
+        this.teamStatService = TeamStatService.getInstance();
     }
 
     public Optional<TeamStats> findById(int id) {

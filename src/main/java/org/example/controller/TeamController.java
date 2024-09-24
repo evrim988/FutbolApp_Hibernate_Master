@@ -14,7 +14,7 @@ public class TeamController {
     private final TeamService teamService;
 
     public TeamController() {
-        this.teamService = new TeamService();
+        this.teamService = TeamService.getInstance();
     }
 
     public Optional<Team> findById(int id) {
@@ -54,6 +54,8 @@ public class TeamController {
         return teamService.findByTeamName(teamName);
     }
 
-
+    public List<Team> findByFieldNameAndValueEqual(String fieldName, Object value) {
+        return teamService.findByFieldNameAndValueEqual(fieldName, value);
+    }
 
 }

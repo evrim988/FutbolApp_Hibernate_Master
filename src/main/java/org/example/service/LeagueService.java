@@ -6,9 +6,11 @@ import org.example.repository.LeagueRepository;
 
 public class LeagueService extends ServiceManager<org.example.entities.League, Integer>  {
 
-	private final org.example.repository.LeagueRepository leagueRepository;
+	private final LeagueRepository leagueRepository;
+
+	private static LeagueService instance;
 	
-	public LeagueService() {
+	private LeagueService() {
 		this(new LeagueRepository());
 	}
 	
@@ -16,6 +18,15 @@ public class LeagueService extends ServiceManager<org.example.entities.League, I
 		super(repository);
 		this.leagueRepository = repository;
 	}
+
+	public static LeagueService getInstance() {
+		if (instance == null) {
+			instance = new LeagueService();
+		}
+		return instance;
+	}
+
+
 
 
 }

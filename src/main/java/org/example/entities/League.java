@@ -33,14 +33,21 @@ public class League extends BaseEntity {
 	private LocalDate seasonStartDate;
 	private LocalDate seasonEndDate;
 
-	@OneToMany(mappedBy = "league", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Team> leagueTeamList;
 
 	@Transient
 	private List<Integer> leagueTeamIDList;
-	
-	
-	
 
-	
+	@Override
+	public String toString() {
+		return "League{" +
+				"leagueName='" + getLeagueName() + '\'' +
+				", region=" + getRegion() +
+				", season='" + getSeason() + '\'' +
+				", division=" + getDivision() +
+				", seasonStartDate=" + getSeasonStartDate() +
+				", seasonEndDate=" + getSeasonEndDate() +
+				'}';
+	}
 }

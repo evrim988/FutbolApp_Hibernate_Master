@@ -1,7 +1,6 @@
 package org.example.models;
 
 
-
 import org.example.entities.League;
 import org.example.entities.Match;
 import org.example.entities.Team;
@@ -10,99 +9,110 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class FixtureModel {
-	private List<Match> matchListofaLeague;
-	private League league;
-	private DatabaseModels databaseModel;
-	
-	public FixtureModel(DatabaseModels dm, League league) {
-		this.league=league;
-		this.databaseModel=dm;
-		this.matchListofaLeague=DatabaseModels.matchController.findAllByLeagueId(league.getId());
-	}
-	
-	public void displayLeagueFixture() {
-		System.out.println("--------------------------------------------------");
-		System.out.println("Fixture Information:");
-		System.out.println("--------------------------------------------------");
-		System.out.println("League Name    : " + league.getLeagueName());
-		System.out.println("Division     : " + league.getDivision());
-		System.out.println("Season Start Date:" + league.getSeasonStartDate());
-		System.out.println("Season End Date:" + league.getSeasonEndDate());
-		System.out.println("Matches     : ");
-		Map<Integer, List<Match>> matchesByWeek = new LinkedHashMap<>();
-		int matchWeek = 1;
-		LocalDate currentWeekStartDate = league.getSeasonStartDate();
-		
-		for (Match match : matchListofaLeague) {
-			while (match.getMatchDate().isAfter(currentWeekStartDate.plusDays(6))) {
-				matchWeek++;
-				currentWeekStartDate = currentWeekStartDate.plusWeeks(1);
-			}
-			matchesByWeek.computeIfAbsent(matchWeek, k -> new ArrayList<>()).add(match);
-		}
-		
-		for (Map.Entry<Integer, List<Match>> entry : matchesByWeek.entrySet()) {
-			System.out.println("Week " + entry.getKey() + ":");
-			for (Match match : entry.getValue()) {
-				String homeTeamName = DatabaseModels.teamController.findById(match.getHomeTeam().getId()).map(Team::getTeamName).orElse("Unknown");
-				String awayTeamName = DatabaseModels.teamController.findById(match.getAwayTeam().getId()).map(Team::getTeamName).orElse("Unknown");
-				System.out.println("  " + match.getMatchDate() + ": " + homeTeamName + " vs " + awayTeamName);
-			}
-		}
-	}
-	
-	public void displayTeamFixture(String teamName) {
-		System.out.println("--------------------------------------------------");
-		System.out.println("Fixture Information:");
-		System.out.println("--------------------------------------------------");
-		System.out.println("League Name    : " + league.getLeagueName());
-		System.out.println("Division     : " + league.getDivision());
-		System.out.println("Season Start Date:" + league.getSeasonStartDate());
-		System.out.println("Season End Date:" + league.getSeasonEndDate());
-		System.out.println("Matches     : ");
-		
-		
-		Optional<Team> team = DatabaseModels.teamController.findByTeamName(teamName);
-		
-		Map<Integer, List<Match>> matchesByWeek = new LinkedHashMap<>();
-		int matchWeek = 1;
-		LocalDate currentWeekStartDate = league.getSeasonStartDate();
-		
-		for (Match match : matchListofaLeague) {
-			while (match.getMatchDate().isAfter(currentWeekStartDate.plusDays(6))) {
-				matchWeek++;
-				currentWeekStartDate = currentWeekStartDate.plusWeeks(1);
-			}
-			matchesByWeek.computeIfAbsent(matchWeek, k -> new ArrayList<>()).add(match);
-		}
-		
-		for (Map.Entry<Integer, List<Match>> entry : matchesByWeek.entrySet()) {
-			System.out.println("Week " + entry.getKey() + ":");
-			for (Match match : entry.getValue()) {
-				String homeTeamName = DatabaseModels.teamController.findById(match.getHomeTeam().getId()).map(Team::getTeamName).orElse("Unknown");
-				String awayTeamName = DatabaseModels.teamController.findById(match.getAwayTeam().getId()).map(Team::getTeamName).orElse("Unknown");
-				
-				if (match.getHomeTeam().getId() == team.get().getId() || match.getAwayTeam().getId() == team.get().getId()) {
-					System.out.println("  " + match.getMatchDate() + ": " + homeTeamName + " vs " + awayTeamName);
-				}
-			}
-		}
-	}
-	
-	
-	public List<Match> getMatchListofaLeague() {
-		return matchListofaLeague;
-	}
-	
-	public void setMatchListofaLeague(List<Match> matchListofaLeague) {
-		this.matchListofaLeague = matchListofaLeague;
-	}
-	
-	public League getLeague() {
-		return league;
-	}
-	
-	public void setLeague(League league) {
-		this.league = league;
-	}
+    private List<Match> matchListofaLeague;
+    private League league;
+    private DatabaseModels databaseModel;
+
+    public FixtureModel(DatabaseModels dm, League league) {
+        this.league = league;
+        this.databaseModel = dm;
+        this.matchListofaLeague = DatabaseModels.matchController.findAllByLeagueId(league.getId());
+    }
+
+    public void displayLeagueFixture() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Fixture Information:");
+        System.out.println("--------------------------------------------------");
+        System.out.println("League Name    : " + league.getLeagueName());
+        System.out.println("Division     : " + league.getDivision());
+        System.out.println("Season Start Date:" + league.getSeasonStartDate());
+        System.out.println("Season End Date:" + league.getSeasonEndDate());
+        System.out.println("Matches     : ");
+        Map<Integer, List<Match>> matchesByWeek = new LinkedHashMap<>();
+        int matchWeek = 1;
+        LocalDate currentWeekStartDate = league.getSeasonStartDate();
+
+        for (Match match : matchListofaLeague) {
+            while (match.getMatchDate().isAfter(currentWeekStartDate.plusDays(6))) {
+                matchWeek++;
+                currentWeekStartDate = currentWeekStartDate.plusWeeks(1);
+            }
+            matchesByWeek.computeIfAbsent(matchWeek, k -> new ArrayList<>()).add(match);
+        }
+
+        for (Map.Entry<Integer, List<Match>> entry : matchesByWeek.entrySet()) {
+            System.out.println("Week " + entry.getKey() + ":");
+            for (Match match : entry.getValue()) {
+                String homeTeamName = DatabaseModels.teamController.findById(match.getHomeTeam().getId()).map(Team::getTeamName).orElse("Unknown");
+                String awayTeamName = DatabaseModels.teamController.findById(match.getAwayTeam().getId()).map(Team::getTeamName).orElse("Unknown");
+                System.out.println("  " + match.getMatchDate() + ": " + homeTeamName + " vs " + awayTeamName);
+            }
+        }
+    }
+
+    public void displayTeamFixture(String teamName) {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Fixture Information:");
+        System.out.println("--------------------------------------------------");
+        System.out.println("League Name    : " + league.getLeagueName());
+        System.out.println("Division     : " + league.getDivision());
+        System.out.println("Season Start Date:" + league.getSeasonStartDate());
+        System.out.println("Season End Date:" + league.getSeasonEndDate());
+        System.out.println("Matches     : ");
+
+
+        List<Team> teamList = DatabaseModels.teamController.findByFieldNameAndValueEqual("teamName", teamName);
+
+
+        Map<Integer, List<Match>> matchesByWeek = new LinkedHashMap<>();
+        int matchWeek = 1;
+        LocalDate currentWeekStartDate = league.getSeasonStartDate();
+
+        for (Match match : matchListofaLeague) {
+            while (match.getMatchDate().isAfter(currentWeekStartDate.plusDays(6))) {
+                matchWeek++;
+                currentWeekStartDate = currentWeekStartDate.plusWeeks(1);
+            }
+            matchesByWeek.computeIfAbsent(matchWeek, k -> new ArrayList<>()).add(match);
+        }
+        if (!teamList.isEmpty()) {
+            for (Map.Entry<Integer, List<Match>> entry : matchesByWeek.entrySet()) {
+                System.out.println("Week " + entry.getKey() + ":");
+                for (Match match : entry.getValue()) {
+                    String homeTeamName = DatabaseModels.teamController.findById(match.getHomeTeam().getId()).map(Team::getTeamName).orElse("Unknown");
+                    String awayTeamName = DatabaseModels.teamController.findById(match.getAwayTeam().getId()).map(Team::getTeamName).orElse("Unknown");
+
+
+                    for (Team team : teamList) {
+                        if (match.getHomeTeam().getId() == team.getId() || match.getAwayTeam().getId() == team.getId()) {
+                            System.out.println("  " + match.getMatchDate() + ": " + homeTeamName + " vs " + awayTeamName);
+                        }
+
+                    }
+                }
+
+            }
+        }
+        else {
+            System.out.println("\nNo matches found. Please enter the fullname...");
+        }
+
+    }
+
+
+    public List<Match> getMatchListofaLeague() {
+        return matchListofaLeague;
+    }
+
+    public void setMatchListofaLeague(List<Match> matchListofaLeague) {
+        this.matchListofaLeague = matchListofaLeague;
+    }
+
+    public League getLeague() {
+        return league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
+    }
 }
