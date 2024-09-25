@@ -4,6 +4,7 @@ package org.example.modules;
 
 import org.example.entities.League;
 import org.example.entities.Manager;
+import org.example.entities.Team;
 import org.example.models.DatabaseModels;
 
 import java.util.InputMismatchException;
@@ -110,6 +111,34 @@ public class LogInModule {
 		loggedManager=null;
 		System.out.println("You are logged out!");
 		return loggedManager;
+	}
+
+	public Manager register(){
+		System.out.println("\n-----------Register------------------");
+		System.out.print("Enter your name: ");
+		String name = sc.nextLine();
+		System.out.print("Enter your surname: ");
+		String surname = sc.nextLine();
+		System.out.print("Enter your age: ");
+		Integer age = sc.nextInt();
+		System.out.print("Enter your nationality: ");
+		String nationality = sc.nextLine();
+		System.out.print("Enter your username: ");
+		String username = sc.nextLine();
+		System.out.print("Enter your password: ");
+		String password = sc.nextLine();
+		System.out.println("-----------------Available Teams----------------------- ");
+
+		List<Team> teamList = DatabaseModels.teamController.findAllByLeague(1);
+		teamList.forEach(team -> {
+			System.out.println(team.getId() + " - " + team.getTeamName());
+		});
+		System.out.print("Which team would you like to manage? Enter an id: ");
+		Integer teamID = sc.nextInt();
+		DatabaseModels.teamController.findById(teamID).ifPresentOrElse(team -> {
+			System.out.println(team.getId() + " - " + team.getTeamName());
+		}, () -> System.out.println("Team not found!"));
+		return null;
 	}
 
 }

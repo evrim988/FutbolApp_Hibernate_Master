@@ -26,6 +26,10 @@ public class GameDateController {
         return null;
     }
 
+    public void updateGameDate(GameDate gameDate) {
+        gameDateService.update(gameDate);
+    }
+
     public Optional<GameDate> findById(int id) {
         try {
             return gameDateService.findById(id);

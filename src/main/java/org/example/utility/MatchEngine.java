@@ -5,6 +5,7 @@ import org.example.entities.Ball;
 import org.example.entities.Match;
 import org.example.entities.Player;
 import org.example.entities.Team;
+import org.example.enums.EMatchStatus;
 import org.example.enums.EPosition;
 import org.example.models.DatabaseModels;
 import org.example.utility.events.CrossEvent;
@@ -19,31 +20,31 @@ import java.util.Random;
 public class MatchEngine {
 	Random random = new Random();
 	public void simulateMatch(Match match) {
-		
-		
+
+
 		Ball ball = new Ball();
 		Team homeTeam = DatabaseModels.teamController.findById(match.getHomeTeam().getId()).get();
 		Team awayTeam = DatabaseModels.teamController.findById(match.getAwayTeam().getId()).get();
-		
+
 		// Maç başlar, top orta sahada başlar
 		ball.setPosition(0);
 		ball.setPlayerWithBall(selectStartingPlayer(homeTeam, awayTeam));
-		
-		
+
+
 		Team attackingTeam = homeTeam;
 		Team defendingTeam = awayTeam;
 		for (int minute = 1; minute <= 90; minute++) {
-			
+
 			int random = this.random.nextInt(1, 101);
-			
+
 			if (!ball.getPlayerWithBall().getTeam().getId().equals(attackingTeam.getId())) {
 				Team temp = attackingTeam;
 				attackingTeam = defendingTeam;
 				defendingTeam = temp;
 			}
-			
+
 			System.out.println("Minute: " + minute);
-			
+
 			//ILK 50M HUCUM EV SAHIBI
 			if(attackingTeam==homeTeam) {
 				if(ball.getPosition()==50){
@@ -72,11 +73,11 @@ public class MatchEngine {
 				if (ball.getPosition() >= -50 && ball.getPosition() < 0) {
 					first50m(match, random, ball, attackingTeam, defendingTeam);
 					continue;
-					
+
 				}
 			}
-			
-			
+
+
 			// 50-70M HUCUM EV SAHIBI
 			if(attackingTeam==homeTeam)
 				if(ball.getPosition() <= 0 && ball.getPosition() >= -20) {
@@ -89,54 +90,56 @@ public class MatchEngine {
 					between0and20(match, random, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
-			
+
+
 			//EV SAHIBI 80.M
 			if(attackingTeam==homeTeam)
 				if(ball.getPosition() == -30) {
 					thirtyMeter(match, random, ball, attackingTeam, defendingTeam);
 					continue;
-					
+
 				}
-			
+
 			//DEPLASMAN 80.M
 			if(attackingTeam==awayTeam)
 				if(ball.getPosition() == 30) {
 					thirtyMeter(match, random, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
-			
+
+
 			//EV SAHIBI RAKIP KALEYE 10M
 			if(attackingTeam==homeTeam)
 				if(ball.getPosition()==-40){
 					fortyMeter(match, random, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
+
 			//DEPLASMAN RAKIP KALEYE 10M
 			if(attackingTeam==awayTeam)
 				if(ball.getPosition()==40){
 					fortyMeter(match, random, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
+
 			//EV SAHIBI RAKIP KALEDE
 			if(attackingTeam==homeTeam)
 				if(ball.getPosition()==-50){
 					oneOnOne(match, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
+
 			//DEPLASMAN RAKIP KALEDE
 			if(attackingTeam==awayTeam)
 				if(ball.getPosition()==50){
 					oneOnOne(match, ball, attackingTeam, defendingTeam);
 					continue;
 				}
-			
+
 		}
 		System.out.println("Match Ended. Final Score: Home " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore()+ " Away");
+		match.setStatus(EMatchStatus.PLAYED);
+
 	}
 	
 	

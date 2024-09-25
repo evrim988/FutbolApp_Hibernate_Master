@@ -13,6 +13,10 @@ public class MatchController {
         this.matchService = MatchService.getInstance();
     }
 
+    public Match save(Match match) {
+        return matchService.save(match);
+    }
+
     public List<Match> findAll() {
         return matchService.findAll();
     }
@@ -23,5 +27,13 @@ public class MatchController {
 
     public List<Match> findAllByLeagueId(Integer leagueId) {
         return matchService.findAllByLeagueId(leagueId);
+    }
+
+    public Match update(Match match) {
+        return matchService.update(match);
+    }
+
+    public Boolean delete(Integer matchId) {
+        return matchService.deleteById(matchId);
     }
 }

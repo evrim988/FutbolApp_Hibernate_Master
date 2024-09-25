@@ -16,8 +16,8 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
-        /*DemoData dd = new DemoData();
-        dd.createDemoData();*/
+        DemoData dd = new DemoData();
+
 
         Menu.startMenu();
 

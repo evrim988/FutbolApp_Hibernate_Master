@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.entities.Manager;
+import org.example.entities.Team;
 import org.example.entities.TeamStats;
 import org.example.service.TeamStatService;
 
@@ -25,6 +26,10 @@ public class TeamStatController {
         return Optional.empty();
     }
 
+    public Optional<TeamStats> findByTeamId(Team team) {
+        return teamStatService.findByTeamId(team);
+    }
+
     public List<TeamStats> findAll() {
         try {
             return teamStatService.findAll();
@@ -35,8 +40,16 @@ public class TeamStatController {
         return new ArrayList<>();
     }
 
+    public TeamStats save(TeamStats teamStats) {
+        return teamStatService.save(teamStats);
+    }
+
     public TeamStats update(TeamStats teamStat) {
        return teamStatService.update(teamStat);
+    }
+
+    public Boolean delete(Integer id){
+        return teamStatService.deleteById(id);
     }
 
     public List<TeamStats> findAllLeagueId(Integer leagueId) {

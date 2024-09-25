@@ -8,8 +8,10 @@ import org.example.entities.attributes.TechnicalAttributes;
 import org.example.enums.EMatchStatus;
 import org.example.enums.EPosition;
 import org.example.enums.ERegion;
+import org.example.models.DatabaseModels;
 import org.example.repository.*;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +36,21 @@ public class DemoData {
     private PhysicalAttributes pm;
     private GKAttributes gk;
 
+ /*   static {
+        List<Match> matchList = DatabaseModels.matchController.findAll();
+        for (Match match : matchList) {
+            DatabaseModels.matchController.delete(match.getId());
+        }
+        generateFixtures();
+
+        List<TeamStats> teamStatsList = DatabaseModels.teamStatController.findAll();
+        for (TeamStats teamStats : teamStatsList) {
+            DatabaseModels.teamStatController.delete(teamStats.getId());
+        }
+        createTeamStats();
+
+    }*/
+
     public DemoData() {
         this.leagueRepository = new LeagueRepository();
         this.teamRepository = new TeamRepository();
@@ -54,7 +71,7 @@ public class DemoData {
         // createAttributes();
         //createPlayers();
         //createTeamStats();
-        //generateFixtures();
+
         //createGameDate();
     }
 
@@ -605,10 +622,10 @@ public class DemoData {
 
     }
 
-    public void createTeamStats() {
+    public static void createTeamStats() {
 
-        for (Team team : teamRepository.findAll()) {
-            for (League league : leagueRepository.findAll()) {
+        for (Team team : DatabaseModels.teamController.findAll()) {
+            for (League league : DatabaseModels.leagueController.findAll()) {
                 TeamStats ts = TeamStats.builder()
                         .teamLeague(league)
                         .team(team)
@@ -622,7 +639,7 @@ public class DemoData {
                         .gamesDrawn(0)
                         .build();
 
-                teamStatRepository.save(ts);
+                DatabaseModels.teamStatController.save(ts);
             }
 
         }
@@ -630,11 +647,9 @@ public class DemoData {
 
     }
 
-    public void generateFixtures() {
+    public static void generateFixtures() {
 
-        League leaguex = leagueRepository.findById(1).get();
-
-
+        League leaguex = DatabaseModels.leagueController.findById(1).get();
 
 
         LocalDate matchDate = leaguex.getSeasonStartDate();
@@ -644,7 +659,7 @@ public class DemoData {
 
 
         // Takım ID'lerini listeye ekliyorsunuz
-        List<Team> teamList = teamRepository.findAll();
+        List<Team> teamList = DatabaseModels.teamController.findAll();
 
 
 
@@ -677,7 +692,7 @@ public class DemoData {
                             .homeTeamScore(0)
                             .awayTeamScore(0)
                             .build();
-                    matchRepository.save(match);
+                    DatabaseModels.matchController.save(match);
 
                 } else {
                     match = Match.builder().homeTeam(homeTeam)
@@ -688,7 +703,7 @@ public class DemoData {
                             .homeTeamScore(0)
                             .awayTeamScore(0)
                             .build();
-                    matchRepository.save(match);
+                    DatabaseModels.matchController.save(match);
                 }
 
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.example.modules.MatchModule;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -18,8 +19,7 @@ import java.util.Optional;
 @Entity
 @Table(name="tblteamstats")
 public class TeamStats extends BaseEntity {
-	
-	@ColumnDefault("CURRENT_DATE")
+
 	private LocalDate lastUpdateDate;
 	@ManyToOne
 	@JoinColumn(name = "team_league_id", referencedColumnName = "id")
@@ -45,14 +45,10 @@ public class TeamStats extends BaseEntity {
 		this.state = 1;
 		this.createdAt = LocalDate.now();
 		this.updatedAt = LocalDate.now();
-		this.lastUpdateDate = LocalDate.now();
+		this.lastUpdateDate = LocalDate.of(2024,8,22);
 	}
 	
-	@Override
-	public void preUpdate() {
-		this.lastUpdateDate = LocalDate.now();
-	}
-	
+
 
 	
 

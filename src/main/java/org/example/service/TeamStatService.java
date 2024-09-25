@@ -2,6 +2,7 @@ package org.example.service;
 
 
 import org.example.entities.League;
+import org.example.entities.Team;
 import org.example.entities.TeamStats;
 import org.example.repository.TeamStatRepository;
 
@@ -40,5 +41,9 @@ public class TeamStatService extends ServiceManager<TeamStats, Integer>  {
 			return teamStatsList;
 		}
 		return new ArrayList<>();
+	}
+
+	public Optional<TeamStats> findByTeamId(Team team) {
+		return teamStatRepository.findByTeamId(team);
 	}
 }
