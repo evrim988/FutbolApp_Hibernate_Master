@@ -74,7 +74,7 @@ public class TeamModel {
 		System.out.println("Players     : ");
 		System.out.println("--------------------------------------------------");
 		if (teamPlayers != null && !teamPlayers.isEmpty()) {
-			teamPlayers.forEach(player -> new PlayerModel(databaseModels,player).displayPlayerInfo());
+			teamPlayers.forEach(player -> new PlayerModel().displayPlayerInfo());
 		} else {
 			System.out.println("No players found for this club.");
 		}

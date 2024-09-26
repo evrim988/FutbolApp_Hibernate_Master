@@ -15,9 +15,28 @@ public class ManagerController {
         this.managerService = new ManagerService();
     }
 
+    public Manager save(Manager manager) {
+        try {
+            return managerService.save(manager);
+        } catch (Exception e) {
+            System.out.println("Controller: Manager kaydetme sırasında hata oluştu..." + e.getMessage());
+        }
+        return null;
+    }
+
+    public Manager update(Manager manager) {
+        try {
+            return managerService.update(manager);
+        }
+        catch (Exception e) {
+            System.out.println("Controller: Manager güncelleme sırasında hata oluştu..." + e.getMessage());
+        }
+        return null;
+    }
+
     public Optional<Manager> findById(int id) {
         try {
-           return managerService.findById(id);
+            return managerService.findById(id);
         } catch (Exception e) {
             System.out.println("Controller: Manager bulma sırasında hata oluştu... " + e.getMessage());
         }
@@ -26,9 +45,8 @@ public class ManagerController {
 
     public List<Manager> findAll() {
         try {
-           return managerService.findAll();
-        }
-        catch (Exception e) {
+            return managerService.findAll();
+        } catch (Exception e) {
             System.out.println("Controller: Manager listeleme sırasında hata oluştu... " + e.getMessage());
         }
         return new ArrayList<>();
@@ -40,5 +58,13 @@ public class ManagerController {
 
     public Optional<Manager> findByUserNameAndPassword(String username, String password) {
         return managerService.findByUserNameAndPassword(username, password);
+    }
+
+    public Optional<Manager> findByTeamId(Integer teamId) {
+        return managerService.findByTeamId(teamId);
+    }
+
+    public boolean existsByUsername(String username) {
+        return managerService.existsByUsername(username);
     }
 }

@@ -17,9 +17,15 @@ public class LogInModule {
 	static Scanner sc = new Scanner(System.in);
 	static Manager loggedManager = null;
 
-	public static Manager managerLogIn() {
+	public static Manager managerSelection() {
 		System.out.println("\nWelcome to the Football Manager App!");
-
+		System.out.println("\n Do you want to continue as a existing manager or create a new one? (1/2)");
+		int choice = sc.nextInt();
+		sc.nextLine();
+		if(choice == 2) {
+			register();
+			return logIn();
+		}
 		System.out.println("\nPlease choose a league first!");
 		System.out.println("\n---------------Available Leagues------------------");
 		LeagueModule.displayAllLeagues();
@@ -89,6 +95,10 @@ public class LogInModule {
 			}
 		} while (!validInput);
 
+		return logIn();
+	}
+
+	private static Manager logIn() {
 		do {
 			System.out.print("\nEnter your Username: ");
 			String username = sc.nextLine();
@@ -113,7 +123,7 @@ public class LogInModule {
 		return loggedManager;
 	}
 
-	public Manager register(){
+	public static Manager register(){
 		System.out.println("\n-----------Register------------------");
 		System.out.print("Enter your name: ");
 		String name = sc.nextLine();
@@ -121,23 +131,49 @@ public class LogInModule {
 		String surname = sc.nextLine();
 		System.out.print("Enter your age: ");
 		Integer age = sc.nextInt();
+		sc.nextLine();
 		System.out.print("Enter your nationality: ");
 		String nationality = sc.nextLine();
 		System.out.print("Enter your username: ");
 		String username = sc.nextLine();
+		boolean b = DatabaseModels.managerController.existsByUsername(username);
+		while(b){
+			System.out.print("Username already exists! Please enter a different one: ");
+			username = sc.nextLine();
+			b = DatabaseModels.managerController.existsByUsername(username);
+		}
 		System.out.print("Enter your password: ");
 		String password = sc.nextLine();
 		System.out.println("-----------------Available Teams----------------------- ");
-
 		List<Team> teamList = DatabaseModels.teamController.findAllByLeague(1);
 		teamList.forEach(team -> {
 			System.out.println(team.getId() + " - " + team.getTeamName());
 		});
 		System.out.print("Which team would you like to manage? Enter an id: ");
 		Integer teamID = sc.nextInt();
+		sc.nextLine();
 		DatabaseModels.teamController.findById(teamID).ifPresentOrElse(team -> {
 			System.out.println(team.getId() + " - " + team.getTeamName());
 		}, () -> System.out.println("Team not found!"));
+		Optional<Team> byId = DatabaseModels.teamController.findById(teamID);
+		while(byId.isEmpty()){
+			System.out.println("Please enter a valid team ID!");
+			teamID = sc.nextInt();
+			sc.nextLine();
+		}
+		if(byId.isPresent()){
+			Optional<Manager> optionalManager = DatabaseModels.managerController.findByTeamId(byId.get().getId());
+			if(optionalManager.isPresent()){
+				Manager oldManager = optionalManager.get();
+				oldManager.setTeam(null);
+				DatabaseModels.managerController.update(oldManager);
+			}
+			Manager manager = Manager.builder().personName(name).personSurname(surname).personAge(age).personNationality(nationality)
+					.managerUserName(username).managerPassword(password).team(byId.get()).build();
+			DatabaseModels.managerController.save(manager);
+			System.out.println("Registration successful!");
+			return manager;
+		}
 		return null;
 	}
 

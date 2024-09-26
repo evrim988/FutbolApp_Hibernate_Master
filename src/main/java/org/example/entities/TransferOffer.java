@@ -2,7 +2,6 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -32,10 +31,22 @@ public class TransferOffer extends BaseEntity {
     Player player;
 
     @ManyToOne
-    @JoinColumn(name = "biddingteamid", referencedColumnName = "id")
-    Team biddingTeam; //teklif yapan
+    @JoinColumn(name = "buyerteamid", referencedColumnName = "id")
+    Team buyerClub; //teklif yapan -> buyerClub
 
     @ManyToOne
-    @JoinColumn(name = "receivingteamid", referencedColumnName = "id")
-    Team receivingTeam; //teklif alan
+    @JoinColumn(name = "ownerteamid", referencedColumnName = "id")
+    Team ownerClub; //teklif alan -> ownerClub
+
+    public String displayOffer(){
+        StringBuilder str = new StringBuilder();
+        str.append("Bidding Team: " + this.buyerClub.getTeamName());
+        str.append("Owner Team: " + this.ownerClub.getTeamName());
+        str.append("Player: " + this.player.getPersonName() + " " + this.player.getPersonSurname());
+        str.append("Offer Type: " + this.offerType);
+        str.append("Offer Price: " + this.offerPrice);
+        str.append("Offer Status: " + this.offerStatus);
+        str.append("Offer Date: " + this.offerDate);
+        return str.toString();
+    }
 }

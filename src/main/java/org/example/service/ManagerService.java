@@ -10,50 +10,64 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ManagerService extends ServiceManager<Manager,Integer>  {
-	private final ManagerRepository managerRepository;
-	private LeagueService leagueService;
-	private TeamService teamService;
-	
-	public ManagerService() {
-		this(new ManagerRepository());
-	}
-	
-	private ManagerService(ManagerRepository repository) {
-		super(repository);
-		this.managerRepository = repository;
-		this.teamService = TeamService.getInstance();
-		this.leagueService = LeagueService.getInstance();
-	}
+public class ManagerService extends ServiceManager<Manager, Integer> {
+    private final ManagerRepository managerRepository;
+    private LeagueService leagueService;
+    private TeamService teamService;
 
-	public List<Manager> findAllByLeague(Integer id) {
-		List<Manager> allManagers = new ArrayList<>();
-		try{
-			Optional<League> league = leagueService.findById(id);
-			if (league.isPresent()) {
-				League leagueX = league.get();
-				List<Team> teamList = teamService.findByFieldNameAndValue("league", leagueX);
-				for (Team team : teamList) {
-					List<Manager> managerList = findByFieldNameAndValue("team", team);
-					allManagers.addAll(managerList);
+    public ManagerService() {
+        this(new ManagerRepository());
+    }
 
-				}
-			}
-		}
-		catch (Exception e){
-			System.out.println("Service: Manager listelemede hata: " + e.getMessage());
-		}
+    private ManagerService(ManagerRepository repository) {
+        super(repository);
+        this.managerRepository = repository;
+        this.teamService = TeamService.getInstance();
+        this.leagueService = LeagueService.getInstance();
+    }
 
-		return allManagers;
-	}
+    public List<Manager> findAllByLeague(Integer id) {
+        List<Manager> allManagers = new ArrayList<>();
+        try {
+            Optional<League> league = leagueService.findById(id);
+            if (league.isPresent()) {
+                League leagueX = league.get();
+                List<Team> teamList = teamService.findByFieldNameAndValue("league", leagueX);
+                for (Team team : teamList) {
+                    List<Manager> managerList = findByFieldNameAndValue("team", team);
+                    allManagers.addAll(managerList);
 
-	public Optional<Manager> findByUserNameAndPassword(String username, String password) {
-		List<Manager> managerList = findAll();
-		for (Manager manager : managerList) {
-			if (manager.getManagerUserName().equals(username) && manager.getManagerPassword().equals(password)) {
-				return Optional.of(manager);
-			}
-		}
-		return Optional.empty();
-	}
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Service: Manager listelemede hata: " + e.getMessage());
+        }
+
+        return allManagers;
+    }
+
+    public Optional<Manager> findByTeamId(Integer teamId) {
+        List<Manager> all = managerRepository.findAll();
+        for (Manager manager : all) {
+            if (manager.getTeam().getId().equals(teamId)) {
+                return Optional.of(manager);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Manager> findByUserNameAndPassword(String username, String password) {
+        List<Manager> managerList = findAll();
+        for (Manager manager : managerList) {
+            if (manager.getManagerUserName().equals(username) && manager.getManagerPassword().equals(password)) {
+                return Optional.of(manager);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean existsByUsername(String username) {
+        List<String> allManagerUsername = managerRepository.findAllManagerUsername(username);
+        return allManagerUsername.contains(username);
+    }
 }

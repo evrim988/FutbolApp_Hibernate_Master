@@ -50,4 +50,11 @@ public class MentalAttributes extends BaseEntity implements PlayerAttributes{
 	public void setDecisionMaking(Integer decisionMaking) {
 		this.decisionMaking = decisionMaking;
 	}
+
+	@Override
+	public String toString() {
+		return "Composure=" + getComposure() +
+				", Vision=" + getVision() +
+				", DecisionMaking=" + getDecisionMaking();
+	}
 }

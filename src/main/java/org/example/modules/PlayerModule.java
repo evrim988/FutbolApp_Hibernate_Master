@@ -107,7 +107,7 @@ public class PlayerModule {
         displayPlayerDetails();
     }
 
-    private static void displayPlayersByTeamName() {
+    static void displayPlayersByTeamName() {
         System.out.print("\nEnter a Team Name (0=Back to Player Menu): ");
         String teamName = sc.nextLine();
         if (teamName.equalsIgnoreCase("0")) {
@@ -151,7 +151,7 @@ public class PlayerModule {
 
         Optional<Player> player = DatabaseModels.playerController.findById(playerID);
         if (player.isPresent()) {
-            PlayerModel playerModel = new PlayerModel(DatabaseModels.getInstance(), player.get());
+            PlayerModel playerModel = new PlayerModel();
             playerModel.displayPlayerInfo();
         } else {
             System.out.println("Player not found!");

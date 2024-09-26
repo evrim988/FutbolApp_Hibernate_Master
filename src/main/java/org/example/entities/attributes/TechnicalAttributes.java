@@ -113,8 +113,7 @@ public class TechnicalAttributes extends BaseEntity implements PlayerAttributes 
 	
 	@Override
 	public String toString() {
-		return "TechnicalAttributes: "
-				+ "Finishing=" + getFinishing()
+		return "Finishing=" + getFinishing()
 				+ ", Pass=" + getPass()
 				+ ", Dribbling=" + getDribbling()
 				+ ", Tackle=" + getTackle()
