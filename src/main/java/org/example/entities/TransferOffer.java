@@ -40,12 +40,13 @@ public class TransferOffer extends BaseEntity {
 
     public String displayOffer(){
         StringBuilder str = new StringBuilder();
-        str.append("Bidding Team: " + this.buyerClub.getTeamName());
-        str.append("Owner Team: " + this.ownerClub.getTeamName());
-        str.append("Player: " + this.player.getPersonName() + " " + this.player.getPersonSurname());
-        str.append("Offer Type: " + this.offerType);
-        str.append("Offer Price: " + this.offerPrice);
-        str.append("Offer Status: " + this.offerStatus);
+        str.append("Offer id: " + this.getId() + "\n");
+        str.append("Bidding Team: " + this.buyerClub.getTeamName() + "\n");
+        str.append("Owner Team: " + this.ownerClub.getTeamName() + "\n");
+        str.append("Player: " + this.player.getPersonName() + " " + this.player.getPersonSurname() + "\n");
+        str.append("Offer Type: " + this.offerType + "\n");
+        str.append("Offer Price: " + this.offerPrice + "\n");
+        str.append("Offer Status: " + this.offerStatus + "\n");
         str.append("Offer Date: " + this.offerDate);
         return str.toString();
     }

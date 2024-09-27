@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.example.enums.EOfferStatus;
 
 import java.time.LocalDate;
 
@@ -17,12 +18,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tblplayercontract")
-public class PlayerContract extends BaseEntity {
+@Table(name = "tblcontractoffer")
+public class ContractOffer extends BaseEntity {
 
     Double wageOffer;
     LocalDate contractStartDate;
     LocalDate contractEndDate;
+    EOfferStatus offerStatus;
 
     @ManyToOne
     @JoinColumn(name = "teamid", referencedColumnName = "id")
