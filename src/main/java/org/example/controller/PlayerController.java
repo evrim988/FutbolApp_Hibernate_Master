@@ -17,6 +17,14 @@ public class PlayerController {
         this.playerService = PlayerService.getInstance();
     }
 
+    public Player save(Player player) {
+        return playerService.save(player);
+    }
+    
+    public Player update(Player player) {
+        return playerService.update(player);
+    }
+    
     public Optional<Player> findById(int id) {
         try {
             return playerService.findById(id);

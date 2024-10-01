@@ -7,6 +7,7 @@ import org.example.repository.LeagueRepository;
 import org.example.repository.TransferOfferRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TransferOfferService extends ServiceManager<TransferOffer, Integer> {
     private final TransferOfferRepository transferOfferRepository;
@@ -35,5 +36,9 @@ public class TransferOfferService extends ServiceManager<TransferOffer, Integer>
 
     public List<TransferOffer> findByOwnerTeam(Team team) {
         return transferOfferRepository.findByOwnerTeam(team);
+    }
+    
+    public Optional<TransferOffer> findAcceptedOfferByBuyerTeamIdAndPlayerId(Integer teamId, Integer playerId) {
+        return transferOfferRepository.findAcceptedOffersByBuyerTeamIdAndPlayerId(teamId, playerId);
     }
 }

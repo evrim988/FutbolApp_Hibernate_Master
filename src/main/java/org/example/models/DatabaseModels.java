@@ -16,6 +16,8 @@ public class DatabaseModels {
 	public static GameDateController gameDateController = new GameDateController();
 	public static TransferOfferController transferOfferController = new TransferOfferController();
 	public static ContractOfferController contractOfferController = new ContractOfferController();
+	public static ContractController contractController = new ContractController();
+	public static TransferController transferController = new TransferController();
 	
 	
 	private DatabaseModels() {

@@ -34,4 +34,8 @@ public class TransferOfferController {
     public List<TransferOffer> findByOwnerTeam(Team team) {
         return transferOfferService.findByOwnerTeam(team);
     }
+    
+    public Optional<TransferOffer> findAcceptedOfferByBuyerTeamIdAndPlayerId(Integer teamId, Integer playerId) {
+        return transferOfferService.findAcceptedOfferByBuyerTeamIdAndPlayerId(teamId, playerId);
+    }
 }

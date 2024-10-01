@@ -17,7 +17,9 @@
         <class>org.example.entities.TeamStats</class>
         <class>org.example.entities.GameDate</class>
         <class>org.example.entities.TransferOffer</class>
-        <class>org.example.entities.PlayerContract</class>
+        <class>org.example.entities.ContractOffer</class>
+        <class>org.example.entities.Contract</class>
+        <class>org.example.entities.Transfer</class>
         <class>org.example.entities.attributes.GKAttributes</class>
         <class>org.example.entities.attributes.MentalAttributes</class>
         <class>org.example.entities.attributes.PhysicalAttributes</class>

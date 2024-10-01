@@ -17,6 +17,14 @@ public class TeamController {
         this.teamService = TeamService.getInstance();
     }
 
+    public Team save(Team team) {
+        return teamService.save(team);
+    }
+    
+    public Team update(Team team) {
+        return teamService.update(team);
+    }
+    
     public Optional<Team> findById(int id) {
         try {
             return teamService.findById(id);

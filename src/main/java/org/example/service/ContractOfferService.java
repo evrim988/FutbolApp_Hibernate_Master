@@ -1,8 +1,11 @@
 package org.example.service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.entities.ContractOffer;
 import org.example.repository.ContractOfferRepository;
 import org.example.repository.RepositoryManager;
+
+import java.util.List;
 
 public class ContractOfferService extends ServiceManager<ContractOffer, Integer> {
     private final ContractOfferRepository repository;
@@ -23,5 +26,9 @@ public class ContractOfferService extends ServiceManager<ContractOffer, Integer>
             instance = new ContractOfferService();
         }
         return instance;
+    }
+    
+    public List<ContractOffer> findAcceptedByTeamId(Integer teamId) {
+        return repository.findAcceptedByTeamId(teamId);
     }
 }

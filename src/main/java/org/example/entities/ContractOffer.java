@@ -33,5 +33,16 @@ public class ContractOffer extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "playerid", referencedColumnName = "id")
     Player player;
-
+    
+    public String displayOffer(){
+        StringBuilder str = new StringBuilder();
+        str.append("Offer id: " + this.getId() + "\n");
+        str.append("Team: " + this.team.getTeamName() + "\n");
+        str.append("Player: " + this.player.getPersonName() + " " + this.player.getPersonSurname() + "\n");
+        str.append("Wage Offer: " + this.wageOffer + "\n");
+        str.append("Contract S. Date: " + this.contractStartDate + "\n");
+        str.append("Contract E. Date: " + this.contractEndDate + "\n");
+        str.append("Offer Status: " + this.offerStatus + "\n");
+        return str.toString();
+    }
 }
