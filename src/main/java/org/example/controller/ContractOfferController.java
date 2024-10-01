@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.entities.ContractOffer;
+import org.example.entities.Team;
 import org.example.service.ContractOfferService;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class ContractOfferController {
         return contractOfferService.update(contractOffer);
     }
     
-    public List<ContractOffer> findAcceptedByTeamId(Integer teamId) {
-        return contractOfferService.findAcceptedByTeamId(teamId);
+    public List<ContractOffer> findAcceptedByTeamId(Team team) {
+        return contractOfferService.findAcceptedByTeamId(team);
     }
     
     public Optional<ContractOffer> findById(int id) {

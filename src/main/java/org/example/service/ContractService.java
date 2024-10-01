@@ -1,9 +1,12 @@
 package org.example.service;
 
 import org.example.entities.Contract;
+import org.example.entities.Team;
 import org.example.entities.Transfer;
 import org.example.repository.ContractRepository;
 import org.example.repository.TransferRepository;
+
+import java.util.List;
 
 public class ContractService extends ServiceManager<Contract, Integer>  {
 	
@@ -26,8 +29,10 @@ public class ContractService extends ServiceManager<Contract, Integer>  {
 		}
 		return instance;
 	}
-	
-	
-	
+
+
+	public List<Contract> findAllByTeam(Team team) {
+		return contractRepository.findAllByTeam(team);
+	}
 	
 }

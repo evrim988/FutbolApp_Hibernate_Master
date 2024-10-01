@@ -66,13 +66,14 @@ public class DemoData {
     }
 
     public void createDemoData() {
-        //createLeague();
-        //createTeamsAndManagers();
-        // createAttributes();
-        //createPlayers();
-        //createTeamStats();
-
-        //createGameDate();
+        createLeague();
+        createTeamsAndManagers();
+        createAttributes();
+        createPlayers();
+        createGoalKeepers();
+        createTeamStats();
+        createGameDate();
+        generateFixtures();
     }
 
     private void createLeague() {
@@ -585,7 +586,8 @@ public class DemoData {
 
 
         int name = 0;
-      /*  for (Team team : teamList) {
+
+        for (Team team : teamList) {
             for (int i = 0; i < positions.length; i++) {
                 Player player = Player.builder()
                         .personName(names[name])
@@ -598,13 +600,43 @@ public class DemoData {
                         .team(team)
                         .playersPosition(positions[i])
                         .build();
-
+                player.setPlayerOverallRating(player.calculateOverallRating());
                 playerRepository.save(player);
             }
             name++;
 
         }
-*/
+
+
+    }
+
+    public void createGoalKeepers(){
+
+        String[] names =
+                {"Ahmet", "Baris", "Can", "Deniz", "Efe", "Fikret", "Gokhan", "Huseyin", "Ibrahim", "Kamil", "Levent",
+                        "Mehmet", "Nadir", "Onur", "Rifat", "Selim", "Tuna", "Umut", "Veli", "Zafer"};
+        String[] surnames = {"Yilmaz", "Celik", "Ozturk", "Ozcan", "Kaya", "Kilic"};
+        Integer[] ages = {18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+        String nationality = "Turkiye";
+        Double wage = 1d;
+        Double salary = 1d;
+        EPosition[] positions = {EPosition.CB, EPosition.LB, EPosition.RB, EPosition.CM, EPosition.LW, EPosition.RW, EPosition.ST};
+
+        // EPosition.GK,
+        Random psur = new Random();
+        psur.nextInt(0, surnames.length);
+
+        Random pages = new Random();
+        pages.nextInt(0, ages.length);
+
+        Random ppos = new Random();
+        ppos.nextInt(0, ages.length);
+
+
+        List<Team> teamList = teamRepository.findAll();
+
+        int name = 0;
+
         for (Team team : teamList) {
             Player player = Player.builder()
                     .personName(names[name])
@@ -616,10 +648,10 @@ public class DemoData {
                     .playersPosition(EPosition.GK)
                     .build();
 
+            player.setPlayerOverallRating(player.calculateOverallRating());
             playerRepository.save(player);
             name++;
         }
-
     }
 
     public static void createTeamStats() {

@@ -53,7 +53,7 @@ public class Menu {
 						System.out.println("\nPlease enter a valid value!\n");
 					}
 				} else {
-					if (userInput == 2 || userInput == 7 || userInput == 3 || userInput == 9 || userInput == 0|| userInput == 4 || userInput==5|| userInput == 6 || userInput == 8) {
+					if ( userInput == 2 || userInput == 7 || userInput == 3 || userInput == 9 || userInput == 0 || userInput == 4 || userInput==5|| userInput == 6 || userInput == 8) {
 						validInput = true;
 					} else {
 						System.out.println("\nPlease enter a valid value!");
@@ -84,13 +84,13 @@ public class Menu {
 	}
 	
 	public static void quit() {
-		System.out.println("Do you want to save your changes? (y/n)");
+		/*System.out.println("Do you want to save your changes? (y/n)");
 		String choice = sc.next();
 		sc.nextLine();
 		if (choice.equalsIgnoreCase("y")) {
 			//TODO: herşeyi kaydet
 			System.out.println("Changes saved successfully!");
-		}
+		}*/
 		System.out.println("\nHave a nice day!");
 	}
 }

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tbltransfer")
+@Table(name = "tbltransferoffer")
 public class TransferOffer extends BaseEntity {
 
     Double offerPrice;

@@ -47,7 +47,8 @@ public class Player extends Person {
 	@ManyToOne
     @JoinColumn(name = "gk_attributes_id", referencedColumnName = "id")
     private GKAttributes gkAttributes;
-	
+
+
 	
 	public Player(
 	              TechnicalAttributes technicalAttributes, MentalAttributes mentalAttributes, PhysicalAttributes physicalAttributes,
@@ -79,7 +80,7 @@ public class Player extends Person {
 	}
 	
 	
-	private Integer calculateOverallRating() {
+	public Integer calculateOverallRating() {
 		if(playersPosition.equals(EPosition.ST)){
 			// Forwards - emphasize on Finishing, Shot Power, and Dribbling
 			this.playerOverallRating = (int) (

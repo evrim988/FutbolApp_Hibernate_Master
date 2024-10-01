@@ -53,10 +53,10 @@ public class LogInModule {
 
 		System.out.println("\n---------------Available Managers in The League------------------");
 		List<Manager> all = DatabaseModels.managerController.findAllByLeague(leagueID);
-		AtomicInteger count = new AtomicInteger(1);
+
 		all.forEach(manager -> {
-			System.out.println(count + " - " +  manager.getPersonName() +  " " + manager.getPersonSurname() + " " + manager.getTeam().getTeamName());
-			count.getAndIncrement();
+			System.out.println(manager.getId() + " - " +  manager.getPersonName() +  " " + manager.getPersonSurname() + " " + manager.getTeam().getTeamName());
+
 		});
 
 		boolean validInput = false;

@@ -1,8 +1,11 @@
 package org.example.service;
 
+import org.example.entities.Team;
 import org.example.entities.Transfer;
 import org.example.repository.LeagueRepository;
 import org.example.repository.TransferRepository;
+
+import java.util.List;
 
 public class TransferService extends ServiceManager<Transfer, Integer>  {
 	
@@ -25,8 +28,12 @@ public class TransferService extends ServiceManager<Transfer, Integer>  {
 		}
 		return instance;
 	}
-	
-	
-	
-	
+
+	public List<Transfer> findAllTopTransfers(){
+		return transferRepository.findAllTopTransfers();
+	}
+
+	public List<Transfer> findAllTransferByTeam(Team team){
+		return transferRepository.findAllTransferByTeam(team);
+	}
 }

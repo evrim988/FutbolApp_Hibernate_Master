@@ -1,9 +1,6 @@
 package org.example.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +21,7 @@ public class ContractOffer extends BaseEntity {
     Double wageOffer;
     LocalDate contractStartDate;
     LocalDate contractEndDate;
+    @Enumerated(EnumType.STRING)
     EOfferStatus offerStatus;
 
     @ManyToOne

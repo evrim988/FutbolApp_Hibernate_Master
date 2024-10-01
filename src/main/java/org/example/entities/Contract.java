@@ -30,4 +30,15 @@ public class Contract extends BaseEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     Transfer transfer;
 
+    public String displayContract(){
+        StringBuilder str = new StringBuilder();
+        str.append("Contract id: " + this.getId() + "\n");
+        str.append("Team: " + this.team.getTeamName() + "\n");
+        str.append("Player: " + this.player.getPersonName() + " " + this.player.getPersonSurname() + "\n");
+        str.append("Wage: " + this.wage + "\n");
+        str.append("Start Date: " + this.contractStartDate);
+        str.append("End Date: " + this.contractEndDate);
+        return str.toString();
+    }
+
 }

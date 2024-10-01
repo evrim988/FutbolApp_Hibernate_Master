@@ -2,6 +2,7 @@ package org.example.service;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.entities.ContractOffer;
+import org.example.entities.Team;
 import org.example.repository.ContractOfferRepository;
 import org.example.repository.RepositoryManager;
 
@@ -28,7 +29,7 @@ public class ContractOfferService extends ServiceManager<ContractOffer, Integer>
         return instance;
     }
     
-    public List<ContractOffer> findAcceptedByTeamId(Integer teamId) {
-        return repository.findAcceptedByTeamId(teamId);
+    public List<ContractOffer> findAcceptedByTeamId(Team team) {
+        return repository.findAcceptedByTeamId(team);
     }
 }

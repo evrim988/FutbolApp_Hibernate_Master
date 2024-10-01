@@ -1,10 +1,12 @@
 package org.example.controller;
 
 import org.example.entities.Contract;
+import org.example.entities.Team;
 import org.example.entities.Transfer;
 import org.example.service.ContractService;
 import org.example.service.LeagueService;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ContractController {
@@ -25,5 +27,8 @@ public class ContractController {
 	public Optional<Contract> findById(int id) {
 		return contractService.findById(id);
 	}
-	
+
+	public List<Contract> findAllByTeam(Team team) {
+		return contractService.findAllByTeam(team);
+	}
 }

@@ -7,6 +7,7 @@ import org.example.entities.Team;
 import org.example.repository.ManagerRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,13 +37,12 @@ public class ManagerService extends ServiceManager<Manager, Integer> {
                 for (Team team : teamList) {
                     List<Manager> managerList = findByFieldNameAndValue("team", team);
                     allManagers.addAll(managerList);
-
                 }
             }
         } catch (Exception e) {
             System.out.println("Service: Manager listelemede hata: " + e.getMessage());
         }
-
+        allManagers.sort(Comparator.comparing(Manager::getId));
         return allManagers;
     }
 
